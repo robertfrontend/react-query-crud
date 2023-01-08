@@ -11,8 +11,15 @@
       "name": "hola 2",
       "description": "hola 2",
       "price": "33333",
-      "inStock": true,
+      "inStock": false,
       "id": 5
+    },
+    {
+      "name": "NUEVO ",
+      "description": "NUEVO ",
+      "price": "20002",
+      "inStock": false,
+      "id": 7
     }
   ]
 }

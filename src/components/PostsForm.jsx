@@ -10,7 +10,6 @@ export default function PostsForm() {
     const addPostMutation = useMutation({
         mutationFn: createProduct,
         onSuccess: () => {
-            console.log("Post creado con exito")
             queryClient.invalidateQueries("products");
         },
     })

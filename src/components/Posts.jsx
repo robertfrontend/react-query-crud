@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
-import { getProducts, deleteProduct } from "../api/productsAPI"
+import { getProducts, deleteProduct, updateProduct } from "../api/productsAPI"
 
 export default function Posts() {
     const queryClient = useQueryClient()
@@ -14,10 +14,16 @@ export default function Posts() {
   const deleteProductMutation = useMutation({
     mutationFn: deleteProduct,
     onSuccess: () => {
-          console.log("Producto eliminado creado con exito")
           queryClient.invalidateQueries("products");
     },
     onError: () => console.log("HA OCURRIDO UN ERROR")
+  })
+
+  const updateProductMutation = useMutation({
+    mutationFn: updateProduct,
+    onSuccess: () => {
+          queryClient.invalidateQueries("products");
+    },
   })
 
   const handleDelect = (id) => {
@@ -36,16 +42,29 @@ export default function Posts() {
 
   return (
     <div> 
-      {/* {JSON.stringify(data)} */}
-      {posts.map((item) => (
-        <div key={item.id}>
-          <h2> {item.name}</h2>
-          <p>{item.description}</p>
-          <p>$ {item.price}</p>
+      {posts.map((product) => (
+        <div key={product.id}>
+          <h2> {product.name}</h2>
+          <p>{product.description}</p>
+          <p>$ {product.price}</p>
+
           <button
-           onClick={() => handleDelect(item.id)}
-          >delete</button>
-          <input type="checkbox" />
+           onClick={() => handleDelect(product.id)}
+          >
+            delete
+          </button>
+
+          <input type="checkbox"
+            checked={product.inStock}
+            id={product.id}
+            onChange={(e) => {
+              updateProductMutation.mutate({
+                ...product,
+                inStock: e.target.checked
+              });
+            }}
+          />
+          <label htmlFor={product.id}>In Stock</label>
         </div>
       ))}
     </div>
