@@ -1,22 +1,40 @@
 import React from 'react'
 
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { createProduct, getProducts } from '../api/productsAPI'
+
 export default function PostsForm() {
+
+    const queryClient = useQueryClient()
+
+    const addPostMutation = useMutation({
+        mutationFn: createProduct,
+        onSuccess: () => {
+            console.log("Post creado con exito")
+            queryClient.invalidateQueries("products");
+        },
+    })
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
         const formData = new FormData(e.target)
-        Object.fromEntries(formData)
-        console.log(formData)
+        const postForm = Object.fromEntries(formData)
+        console.log(postForm)
+
+        addPostMutation.mutate({...postForm, inStock: true})
     }
 
   return (
       <form onSubmit={handleSubmit}>
-          <label for="title">Title</label>
-          <input type="text" id="title" name="title" />
+          <label >Name</label>
+          <input type="text" id="name" name="name" />
           
-          <label for="body">Body</label>
-          <input type="text" id="body" name="body" />
+          <label >Description</label>
+          <input type="text" id="description" name="description" />
+          
+          <label>Price</label>
+          <input type="text" id="price" name="price" />
           
           <button>Add Post</button>
     </form>

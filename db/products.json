@@ -1,0 +1,31 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "laptop",
+      "description": "una descripcion",
+      "price": 1000,
+      "inStock": true
+    },
+    {
+      "id": 2,
+      "name": "Keyboard 2",
+      "description": "una descripcion 2",
+      "price": 200,
+      "inStock": true
+    },
+    {
+      "name": "Mouse Logitec",
+      "description": "Description one",
+      "price": "500",
+      "id": 3
+    },
+    {
+      "name": "Keyboard Gaming",
+      "description": "Razer",
+      "price": "200",
+      "inStock": true,
+      "id": 4
+    }
+  ]
+}

@@ -1,10 +1,13 @@
 import { useQuery } from "@tanstack/react-query"
-import { getPosts } from "../api/productsAPI"
+import { getProducts } from "../api/productsAPI"
 
 export default function Posts() {
+
+  // get data
   const { isLoading, data: posts, isError, error } = useQuery({
-    queryKey: ["posts"],
-    queryFn: getPosts
+    queryKey: ["products"],
+    queryFn: getProducts,
+    select: products => products.sort((a, b) => b.id - a.id)
   })
 
   if (isLoading) {
@@ -21,8 +24,9 @@ export default function Posts() {
       {/* {JSON.stringify(data)} */}
       {posts.map((item) => (
         <div key={item.id}>
-          <h2> {item.title}</h2>
-          <p>{item.body}</p>
+          <h2> {item.name}</h2>
+          <p>{item.description}</p>
+          <p>$ {item.price}</p>
           <button>delete</button>
           <input type="checkbox" />
         </div>
