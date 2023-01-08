@@ -1,7 +1,8 @@
-import { useQuery } from "@tanstack/react-query"
-import { getProducts } from "../api/productsAPI"
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
+import { getProducts, deleteProduct } from "../api/productsAPI"
 
 export default function Posts() {
+    const queryClient = useQueryClient()
 
   // get data
   const { isLoading, data: posts, isError, error } = useQuery({
@@ -9,6 +10,19 @@ export default function Posts() {
     queryFn: getProducts,
     select: products => products.sort((a, b) => b.id - a.id)
   })
+
+  const deleteProductMutation = useMutation({
+    mutationFn: deleteProduct,
+    onSuccess: () => {
+          console.log("Producto eliminado creado con exito")
+          queryClient.invalidateQueries("products");
+    },
+    onError: () => console.log("HA OCURRIDO UN ERROR")
+  })
+
+  const handleDelect = (id) => {
+    deleteProductMutation.mutate(id)
+  }
 
   if (isLoading) {
     return <div>Loading...</div>
@@ -19,6 +33,7 @@ export default function Posts() {
     </div>
   }
   
+
   return (
     <div> 
       {/* {JSON.stringify(data)} */}
@@ -27,7 +42,9 @@ export default function Posts() {
           <h2> {item.name}</h2>
           <p>{item.description}</p>
           <p>$ {item.price}</p>
-          <button>delete</button>
+          <button
+           onClick={() => handleDelect(item.id)}
+          >delete</button>
           <input type="checkbox" />
         </div>
       ))}
